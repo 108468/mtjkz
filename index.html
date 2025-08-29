@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>可定制信息卡片</title>
+    <style>
+        /* 基础样式 - 背景图片设置 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        body {
+            background-image: url('https://qn-n4-lz02.obs.cn-north-4.myhuaweicloud.com/meiyan-common-img/photo/68b171baade3a4o0bf56cd2613.jpg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-attachment: fixed;
+            background-position: center 10%;
+            background-color: #f0f0f0;
+            position: relative;
+            font-family: 'Microsoft YaHei', sans-serif;
+            touch-action: manipulation;
+        }
+
+        /* 编号样式 - 可独立调整 */
+        .number {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0);
+            top: 14.6%;
+            left: 10.2%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 姓名样式 - 可独立调整 */
+        .name {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0);
+            top: 18.1%;
+            left: 10.2%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 性别样式 - 可独立调整 */
+        .gender {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.0);
+            top: 18.1%;
+            left: 37.7%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 工种样式 - 可独立调整 */
+        .job {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.0);
+            top: 23.3%;
+            left: 10.2%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 体检结果样式 - 可独立调整 */
+        .health {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.0);
+            top: 23.3%;
+            left: 37.7%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 发证日期样式 - 可独立调整 */
+        .issue-date {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.0);
+            top: 27%;
+            left: 9.3%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 失效日期样式 - 可独立调整 */
+        .expiry-date {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.0);
+            top: 30.1%;
+            left: 9.3%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 发证单位样式 - 可独立调整 */
+        .issuer {
+            position: absolute;
+            color: #000000;
+            font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.0);
+            top: 33.7%;
+            left: 9.3%;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 个人照片样式 - 可自定义位置和大小 */
+        .image1 {
+            position: absolute;
+            width: 92px;
+            height:auto;
+            top: 16.7%;
+            left: 68.5%;
+            border: 0px solid #000;
+            border-radius: 0px;
+        }
+
+        /* 印章图片样式 - 可自定义位置和大小 */
+        .image2 {
+            position: absolute;
+            width: 96px;
+            height: auto;
+            top: 22.9%;
+            left: 49%;
+            border: 0px solid #000;
+            border-radius: 0px;
+        }
+
+        /* 表单样式 */
+        .edit-form {
+            position: fixed;
+            bottom: 100px;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .edit-form label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .edit-form input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .edit-form button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .edit-form button:hover {
+            background-color: #45a049;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 上传按钮样式 */
+        .upload-btn {
+            padding: 5px 10px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .upload-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        /* 随机编号按钮样式 */
+        .random-btn {
+            padding: 5px 10px;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .random-btn:hover {
+            background-color: #7b1fa2;
+        }
+
+        /* 隐藏的文件输入 */
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 编号 - 可独立修改样式和位置 -->
+    <div class="number">编号:</div>
+    
+    <!-- 姓名 - 可独立修改样式和位置 -->
+    <div class="name">姓名:</div>
+    
+    <!-- 性别 - 可独立修改样式和位置 -->
+    <div class="gender">性别:男</div>
+    
+    <!-- 工种 - 可独立修改样式和位置 -->
+    <div class="job">工种:食品行业</div>
+    
+    <!-- 体检结果 - 可独立修改样式和位置 -->
+    <div class="health">体检:合格</div>
+    
+    <!-- 发证日期 - 可独立修改样式和位置 -->
+    <div class="issue-date">发证日期：</div>
+    
+    <!-- 失效日期 - 可独立修改样式和位置 -->
+    <div class="expiry-date">失效日期：</div>
+    
+    <!-- 发证单位 - 可独立修改样式和位置 -->
+    <div class="issuer">发证单位:普宁市市人民医院体检中心</div>
+    
+    <!-- 个人照片 - 可自定义位置和大小 -->
+    <img class="image1" src="https://qn-n4-lz02.obs.cn-north-4.myhuaweicloud.com/meiyan-common-img/photo/68acc6e75a1f8pv1o7vlvj574.jpg" alt="个人照片">
+    
+    <!-- 印章图片 - 可自定义位置和大小 -->
+    <img class="image2" src="https://qn-n4-lz02.obs.cn-north-4.myhuaweicloud.com/meiyan-common-img/photo/68b170ce65e6ay9umid7al8337.jpg" alt="印章图片">
+
+    <!-- 编辑表单 -->
+    <div class="edit-form">
+        <div class="form-group">
+            <label for="edit-number">编号:</label>
+            <input type="text" id="edit-number" value="" oninput="updateField('number', this.value)">
+            <button class="random-btn" onclick="generateRandomNumber()">随机编号</button>
+        </div>
+        <div class="form-group">
+            <label for="edit-name">姓名:</label>
+            <input type="text" id="edit-name" value="" oninput="updateField('name', this.value)">
+            <button class="upload-btn" onclick="document.getElementById('photo-upload').click()">上传照片</button>
+            <input type="file" id="photo-upload" class="file-input" accept="image/*" onchange="uploadPhoto(event)">
+        </div>
+        <div class="form-group">
+            <label for="edit-gender">性别:</label>
+            <input type="text" id="edit-gender" value="男" oninput="updateField('gender', this.value)">
+            <button class="upload-btn" onclick="document.getElementById('stamp-upload').click()">上传印章</button>
+            <input type="file" id="stamp-upload" class="file-input" accept="image/*" onchange="uploadStamp(event)">
+        </div>
+        <div class="form-group">
+            <label for="edit-job">工种:</label>
+            <input type="text" id="edit-job" value="食品行业" oninput="updateField('job', this.value)">
+            <button class="upload-btn" onclick="document.getElementById('bg-upload').click()">上传模板</button>
+            <input type="file" id="bg-upload" class="file-input" accept="image/*" onchange="uploadBackground(event)">
+        </div>
+        <div class="form-group">
+            <label for="edit-health">体检结果:</label>
+            <input type="text" id="edit-health" value="合格" oninput="updateField('health', this.value)">
+        </div>
+        <div class="form-group">
+            <label for="edit-issue-date">发证日期:</label>
+            <input type="text" id="edit-issue-date" value="" oninput="updateField('issue-date', this.value)">
+        </div>
+        <div class="form-group">
+            <label for="edit-expiry-date">失效日期:</label>
+            <input type="text" id="edit-expiry-date" value="" oninput="updateField('expiry-date', this.value)">
+        </div>
+        <div class="form-group">
+            <label for="edit-issuer">发证单位:</label>
+            <input type="text" id="edit-issuer" value="普宁市市人民医院体检中心" oninput="updateField('issuer', this.value)">
+        </div>
+    </div>
+
+    <script>
+        // 获取当前日期
+        const today = new Date();
+        
+        // 计算昨天的日期（发证日期）
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const issueDate = formatDate(yesterday);
+        
+        // 计算明年昨天（失效日期）
+        const nextYearYesterday = new Date(yesterday);
+        nextYearYesterday.setFullYear(yesterday.getFullYear() + 1);
+        nextYearYesterday.setDate(nextYearYesterday.getDate() - 1); // 再减一天
+        const expiryDate = formatDate(nextYearYesterday);
+        
+        // 格式化日期为YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        // 设置默认日期
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('edit-issue-date').value = issueDate;
+            document.querySelector('.issue-date').textContent = `发证日期：${issueDate}`;
+            
+            document.getElementById('edit-expiry-date').value = expiryDate;
+            document.querySelector('.expiry-date').textContent = `失效日期：${expiryDate}`;
+        });
+
+        // 实时更新字段
+        function updateField(field, value) {
+            switch(field) {
+                case 'number':
+                    document.querySelector('.number').textContent = `编号:${value}`;
+                    break;
+                case 'name':
+                    document.querySelector('.name').textContent = `姓名:${value}`;
+                    break;
+                case 'gender':
+                    document.querySelector('.gender').textContent = `性别:${value}`;
+                    break;
+                case 'job':
+                    document.querySelector('.job').textContent = `工种:${value}`;
+                    break;
+                case 'health':
+                    document.querySelector('.health').textContent = `体检:${value}`;
+                    break;
+                case 'issue-date':
+                    document.querySelector('.issue-date').textContent = `发证日期：${value}`;
+                    break;
+                case 'expiry-date':
+                    document.querySelector('.expiry-date').textContent = `失效日期：${value}`;
+                    break;
+                case 'issuer':
+                    document.querySelector('.issuer').textContent = `发证单位:${value}`;
+                    break;
+            }
+        }
+
+        // 生成随机编号
+        function generateRandomNumber() {
+            const randomNum = Math.floor(Math.random() * 900000000000) + 100000000000;
+            const numberInput = document.getElementById('edit-number');
+            numberInput.value = randomNum.toString().substring(0, 12);
+            updateField('number', numberInput.value);
+        }
+
+        // 上传背景图片
+        function uploadBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.body.style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 上传个人照片
+        function uploadPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('.image1').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 上传印章图片
+        function uploadStamp(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('.image2').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 禁用缩放和滚动
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
